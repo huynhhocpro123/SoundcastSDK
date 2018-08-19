@@ -228,8 +228,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         audio.playmedias();
                         startPlayerBtn.setEnabled(false);
                     }
-                } else {
-                    Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.txtSkip:
