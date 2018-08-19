@@ -33,6 +33,7 @@ import static vn.mobiapps.soundcast.R.drawable.play;
 import static vn.mobiapps.soundcastsdk.until.Contanst.LINKMP3;
 import static vn.mobiapps.soundcastsdk.until.Contanst.MILISECONDS;
 import static vn.mobiapps.soundcastsdk.until.Contanst.TOKEN;
+import static vn.mobiapps.soundcastsdk.until.Utils.TimeFormat;
 import static vn.mobiapps.soundcastsdk.until.Utils.getTimeFormat;
 
 
@@ -353,21 +354,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void updateTimeAdvertisement(int Start) {
-        timeStart.setText(getTimeFormat(Start));
+        timeStart.setText(TimeFormat(Start));
         seekbarSong.setProgress(Start);
     }
 
     @Override
     public void setTimePlayAudio(int start, int finish) {
         seekbarSong.setMax(finish);
-        timeStart.setText(getTimeFormat(start));
-        timefinish.setText(getTimeFormat(finish));
+        timeStart.setText(TimeFormat(start));
+        timefinish.setText(TimeFormat(finish));
         seekbarSong.setProgress(start);
     }
 
     @Override
     public void updateTimePlayAudio(int start) {
-        timeStart.setText(getTimeFormat(start));
+        timeStart.setText(TimeFormat(start));
         seekbarSong.setProgress(start);
         startPlayerBtn.setEnabled(true);
         if (start / MILISECONDS == 0) {

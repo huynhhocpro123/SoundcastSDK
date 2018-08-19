@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import static vn.mobiapps.soundcastsdk.until.Contanst.MILISECONDS;
-import static vn.mobiapps.soundcastsdk.until.Contanst.MINUTE;
+import java.text.SimpleDateFormat;
+
 import static vn.mobiapps.soundcastsdk.until.Contanst.conntext;
 
 /**
@@ -30,35 +30,11 @@ public class Utils {
         }
     }
 
-    public static String getTimeFormat(int time) {
-        String tm = "";
-        int s;
-        int m;
-        int h;
-        s = ((time / MILISECONDS) % MINUTE);
-        m = (((time / MILISECONDS) - s) / MINUTE);
-        if (m >= MINUTE) {
-            h = m / MINUTE;
-            m = m % MINUTE;
-            if (h > MINUTE) {
-                if (h < MINUTE)
-                    tm += "0" + h + ":";
-                else
-                    tm += h + ":";
-            }
-        }
-        if (m < MINUTE) {
-            tm += "0" + m + ":";
-        } else {
-            tm += m + ":";
-        }
-        if (s <= 9) {
-            tm += "0" + s;
-        } else if ((s >= 10)) {
-            tm += s + "";
-        }
-
-        return tm;
+    public static String TimeFormat(int time){
+        String t = "";
+        SimpleDateFormat timeFormat = new SimpleDateFormat("mm:ss");
+        t = timeFormat.format(time);
+        return t;
     }
 
     public static void check(Context context) {
