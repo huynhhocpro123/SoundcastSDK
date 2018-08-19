@@ -34,7 +34,6 @@ import static vn.mobiapps.soundcastsdk.until.Contanst.LINKMP3;
 import static vn.mobiapps.soundcastsdk.until.Contanst.MILISECONDS;
 import static vn.mobiapps.soundcastsdk.until.Contanst.TOKEN;
 import static vn.mobiapps.soundcastsdk.until.Utils.TimeFormat;
-import static vn.mobiapps.soundcastsdk.until.Utils.getTimeFormat;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ISourdCastViewListener, MediaListener {
@@ -281,8 +280,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         startPlayerBtn.setBackgroundResource(R.drawable.pause);
         seekbarSong.setMax(finish);
-        timeStart.setText(getTimeFormat(start));
-        timefinish.setText(getTimeFormat(finish));
+        timeStart.setText(TimeFormat(start));
+        timefinish.setText(TimeFormat(finish));
         seekbarSong.setProgress(start);
         arrayList.add(getString(R.string.start));
         adapter.notifyDataSetChanged();
