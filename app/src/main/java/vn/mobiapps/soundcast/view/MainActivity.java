@@ -24,7 +24,6 @@ import vn.mobiapps.soundcastsdk.model.modeldata.ModelResponse;
 import vn.mobiapps.soundcastsdk.model.modelview.RequestModel;
 import vn.mobiapps.soundcastsdk.presenter.ISoundCastPresenter;
 import vn.mobiapps.soundcastsdk.presenter.SoundCastPresenterImpl;
-import vn.mobiapps.soundcastsdk.until.Contanst;
 import vn.mobiapps.soundcastsdk.until.MediaPlayerAudio;
 import vn.mobiapps.soundcastsdk.until.Utils;
 import vn.mobiapps.soundcastsdk.view.ISourdCastViewListener;
@@ -56,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Contanst.conntext = this;
         init();
         addControl();
         setOnClickListener();
@@ -207,39 +205,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else if (edtNet.getText().toString().length() > 0 && edtSite.getText().toString().length() > 0 && edTag.getText().toString().length() > 0) {
                     if (checkbox.isChecked()) {
                         audio.deytroy();
-                        Utils.checkNetWork(new Utils.NetWork() {
-                            @Override
-                            public void Connected() {
-                                RequestModel requestModel = new RequestModel();
-                                requestModel.networkID = edtNet.getText().toString();
-                                requestModel.siteID = edtSite.getText().toString();
-                                requestModel.tagID = edTag.getText().toString();
-                                requestModel.pageTitle = "NRJ";
-                                requestModel.pageDescription = "null";
-                                requestModel.keywords = "null";
-                                requestModel.pageUrl = "https%3A%2F%2Fdemo-stg.soundcast.fm%2F";
-                                requestModel.tags = "null";
-                                requestModel.test = "true";
-                                presenter.sendGetURL(requestModel);
-                            }
-                        });
+                        RequestModel requestModel = new RequestModel();
+                        requestModel.networkID = edtNet.getText().toString();
+                        requestModel.siteID = edtSite.getText().toString();
+                        requestModel.tagID = edTag.getText().toString();
+                        requestModel.pageTitle = "NRJ";
+                        requestModel.pageDescription = "null";
+                        requestModel.keywords = "null";
+                        requestModel.pageUrl = "https%3A%2F%2Fdemo-stg.soundcast.fm%2F";
+                        requestModel.tags = "null";
+                        requestModel.test = "true";
+                        presenter.sendGetURL(requestModel);
                     } else {
-                        Utils.checkNetWork(new Utils.NetWork() {
-                            @Override
-                            public void Connected() {
-                                audio.deytroy();
-                                if(arrayList!=null)
-                                {
-                                    arrayList.clear();
-                                }
-                                arrayList.add(getString(R.string.adcall));
-                                arrayList.add(getString(R.string.Error));
-                                arrayList.add(getString(R.string.audio));
-                                adapter.notifyDataSetChanged();
-                                audio.playmedias();
-                                startPlayerBtn.setEnabled(false);
-                            }
-                        });
+                        audio.deytroy();
+                        if (arrayList != null) {
+                            arrayList.clear();
+                        }
+                        arrayList.add(getString(R.string.adcall));
+                        arrayList.add(getString(R.string.Error));
+                        arrayList.add(getString(R.string.audio));
+                        adapter.notifyDataSetChanged();
+                        audio.playmedias();
+                        startPlayerBtn.setEnabled(false);
                     }
                 } else {
                     Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
