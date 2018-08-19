@@ -37,7 +37,6 @@ import static vn.mobiapps.soundcastsdk.until.Utils.getTimeFormat;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ISourdCastViewListener, MediaListener {
-    String TAB = MainActivity.class.getSimpleName();
     private DataParserXMLModel dataParserXMLModel;
     private ISoundCastPresenter presenter;
     private Button startPlayerBtn;
@@ -92,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (audio.mediaPlayerAdvertisement == null && audio.mediaPlayerPlayAudio != null) {
-                    audio.mediaPlayerPlayAudio.seekTo(seekBar.getProgress());
+                if (audio.mediaPlayeAdvertisement == null && audio.mediaPlayAudio != null) {
+                    audio.mediaPlayAudio.seekTo(seekBar.getProgress());
                 }
             }
         });
@@ -199,11 +198,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.startPlayerBtn:
-                if (audio.mediaPlayerPlayAudio != null && audio.mediaPlayerPlayAudio.isPlaying() == true) {
+                if (audio.mediaPlayAudio != null && audio.mediaPlayAudio.isPlaying() == true) {
                     startPlayerBtn.setBackgroundResource(R.drawable.play);
-                    audio.mediaPlayerPlayAudio.pause();
-                } else if (audio.mediaPlayerPlayAudio != null && audio.mediaPlayerPlayAudio.isPlaying() == false) {
-                    audio.mediaPlayerPlayAudio.start();
+                    audio.mediaPlayAudio.pause();
+                } else if (audio.mediaPlayAudio != null && audio.mediaPlayAudio.isPlaying() == false) {
+                    audio.mediaPlayAudio.start();
                     startPlayerBtn.setBackgroundResource(R.drawable.pause);
                 } else if (edtNet.getText().toString().length() > 0 && edtSite.getText().toString().length() > 0 && edTag.getText().toString().length() > 0) {
                     if (checkbox.isChecked()) {
@@ -229,11 +228,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void Connected() {
                                 audio.deytroy();
+                                if(arrayList!=null)
+                                {
+                                    arrayList.clear();
+                                }
                                 arrayList.add(getString(R.string.adcall));
                                 arrayList.add(getString(R.string.Error));
                                 arrayList.add(getString(R.string.audio));
                                 adapter.notifyDataSetChanged();
-                                audio.playmedias(linkMP3PlayAudido);
+                                audio.playmedias();
                                 startPlayerBtn.setEnabled(false);
                             }
                         });
@@ -243,10 +246,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.txtSkip:
-                if (audio.mediaPlayerAdvertisement != null) {
+                if (audio.mediaPlayeAdvertisement != null) {
                     audio.deytroy();
                     txtSkip.setVisibility(View.GONE);
-                    audio.playmedias(linkMP3PlayAudido);
+                    audio.playmedias();
                 }
                 break;
         }
@@ -263,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             dataParserXMLModel = model;
             if (dataParserXMLModel.link.get(0).toString() != null) {
-                audio.playmedia(dataParserXMLModel.link.get(0).toString());
+                audio.playAdvertisement(dataParserXMLModel.link.get(0).toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -345,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter.notifyDataSetChanged();
         listView.setSelection(arrayList.size());
         txtSkip.setVisibility(View.GONE);
-        audio.playmedias(linkMP3PlayAudido);
+        audio.playmedias();
     }
 
     @Override
