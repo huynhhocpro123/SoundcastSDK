@@ -29,7 +29,6 @@ import vn.mobiapps.soundcastsdk.until.Utils;
 import vn.mobiapps.soundcastsdk.view.ISourdCastViewListener;
 
 import static vn.mobiapps.soundcast.R.drawable.play;
-import static vn.mobiapps.soundcastsdk.until.Contanst.LINKMP3;
 import static vn.mobiapps.soundcastsdk.until.Contanst.MILISECONDS;
 import static vn.mobiapps.soundcastsdk.until.Contanst.TOKEN;
 import static vn.mobiapps.soundcastsdk.until.Utils.TimeFormat;
@@ -48,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView listView;
     private CheckBox checkbox;
     private MediaPlayerAudio audio;
-    private String linkMP3PlayAudido = LINKMP3;
+    private String linkMP3PlayAudido = "https://demo-stg.soundcast.fm/assets/audio/going-blind-court_1.mp3";
 
 
     @Override
@@ -158,8 +157,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onErrorSendGetURL(String object) {
-        Toast.makeText(this, object, Toast.LENGTH_SHORT).show();
+    public void onErrorSendGetURL(String data) {
+        Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
     }
 
     @Override

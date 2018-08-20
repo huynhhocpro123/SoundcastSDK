@@ -15,7 +15,4 @@ public class Contanst {
     public static final String MIDPOINT = "&name=midpoint";
     public static final String THIRDQUARTILE = "&name=thirdquartile";
     public static final String COMPLETE = "&name=complete";
-    public static boolean CONNECTED = false;
-    public static String LINKMP3 = "https://demo-stg.soundcast.fm/assets/audio/going-blind-court_1.mp3";
-
 }

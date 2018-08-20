@@ -11,8 +11,6 @@ import vn.mobiapps.soundcastsdk.apimanager.APIManager;
 import vn.mobiapps.soundcastsdk.apimanager.ApiResponse;
 import vn.mobiapps.soundcastsdk.interfaceplayer.MediaListener;
 
-import static android.util.Log.d;
-
 /**
  * Created by NguyenTanHuynh on 7/30/2018.
  */
@@ -26,7 +24,7 @@ public class MediaPlayerAudio {
     private Handler handlerPlayAudio = null;
     public MediaPlayer mediaPlayAudio = null;
     private String linkPlayAudio;
-    MediaListener mediaListener;
+    private MediaListener mediaListener;
 
     public MediaPlayerAudio(MediaListener mediaListener, String linkPlayAudio) {
         try {
@@ -66,54 +64,53 @@ public class MediaPlayerAudio {
 
     public void playAdvertisement(final String url) {
         try {
-            try {
-                deytroy();
-                mediaListener.showProgress();
-                mediaListener.hideKeyBoard();
-                mediaPlayeAdvertisement = new MediaPlayer();
-                handlerAdvertisement = new Handler();
-                mediaPlayeAdvertisement.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mediaPlayeAdvertisement.setDataSource(url);
-                mediaPlayeAdvertisement.prepareAsync();
-                mediaPlayeAdvertisement.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.start();
-                        mediaListener.setBackGroundButtonPause();
-                        finalTime = mediaPlayeAdvertisement.getDuration();
-                        startTime = mediaPlayeAdvertisement.getCurrentPosition();
-                        mediaListener.addStart(startTime, finalTime);
-                        APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.START, new ApiResponse() {
-                            @Override
-                            public void onSuccess(String result) {
-                                d(TAB, "Task result 1 :" + result);
-                            }
+            deytroy();
+            mediaListener.showProgress();
+            mediaListener.hideKeyBoard();
+            mediaPlayeAdvertisement = new MediaPlayer();
+            handlerAdvertisement = new Handler();
+            mediaPlayeAdvertisement.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayeAdvertisement.setDataSource(url);
+            mediaPlayeAdvertisement.prepareAsync();
+            mediaPlayeAdvertisement.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                    mediaListener.setBackGroundButtonPause();
+                    finalTime = mediaPlayeAdvertisement.getDuration();
+                    startTime = mediaPlayeAdvertisement.getCurrentPosition();
+                    mediaListener.addStart(startTime, finalTime);
+                    APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.START, new ApiResponse() {
+                        @Override
+                        public void onSuccess(String result) {
+                            Log.d(TAB, "result 1:" + result.toString());
+                        }
 
-                            @Override
-                            public void onError(String error) {
+                        @Override
+                        public void onError(String error) {
 
-                            }
-                        });
+                        }
+                    });
 
-                        handlerAdvertisement.postDelayed(UpdateSongTime, 0);
-                        mediaListener.hideProgress();
-                    }
-                });
-                mediaPlayeAdvertisement.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                    @Override
-                    public boolean onError(MediaPlayer mp, int what, int extra) {
-                        return false;
-                    }
-                });
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException e1) {
-                e1.printStackTrace();
-            } catch (SecurityException e1) {
-                e1.printStackTrace();
-            } catch (IllegalStateException e1) {
-                e1.printStackTrace();
-            }
+                    handlerAdvertisement.postDelayed(UpdateSongTime, 0);
+                    mediaListener.hideProgress();
+                }
+            });
+            mediaPlayeAdvertisement.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+                    return false;
+                }
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e1) {
+            e1.printStackTrace();
+        } catch (SecurityException e1) {
+            e1.printStackTrace();
+        } catch (IllegalStateException e1) {
+            e1.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,20 +124,17 @@ public class MediaPlayerAudio {
                 mediaListener.setNotEnableButton();
             }
             if (startTime / Contanst.MILISECONDS > 0) {
-//                Log.d(TAB, "mediaPlayeAdvertisement.getCurrentPosition() / Contanst.MILISECONDS:???" + startTime / Contanst.MILISECONDS);
                 if (startTime / Contanst.MILISECONDS == (finalTime / Contanst.MILISECONDS) / 4) {
-//                    Log.d(TAB, "mediaPlayeAdvertisement.getCurrentPosition() / Contanst.MILISECONDS == (totalTime / Contanst.MILISECONDS) / 4:>>>>" + (finalTime / Contanst.MILISECONDS) / 4);
                     mediaListener.addFirstQuartile();
                     mediaListener.showButtonSkip();
                     APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.FIRSTQUARTILE, new ApiResponse() {
                         @Override
                         public void onSuccess(String result) {
-                            d(TAB, "Task result 2 :" + result);
+                            Log.d(TAB, "result 2:" + result.toString());
                         }
 
                         @Override
                         public void onError(String error) {
-
                         }
                     });
                 } else if (startTime / Contanst.MILISECONDS == (finalTime / Contanst.MILISECONDS) / 2) {
@@ -148,7 +142,7 @@ public class MediaPlayerAudio {
                     APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.MIDPOINT, new ApiResponse() {
                         @Override
                         public void onSuccess(String result) {
-                            d(TAB, "Task result 3 :" + result);
+                            Log.d(TAB, "result 3:" + result.toString());
                         }
 
                         @Override
@@ -161,8 +155,7 @@ public class MediaPlayerAudio {
                     APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.THIRDQUARTILE, new ApiResponse() {
                         @Override
                         public void onSuccess(String result) {
-                            d(TAB, "Task result 4 :" + result);
-
+                            Log.d(TAB, "result 4:" + result.toString());
                         }
 
                         @Override
@@ -181,6 +174,7 @@ public class MediaPlayerAudio {
                 APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.COMPLETE, new ApiResponse() {
                     @Override
                     public void onSuccess(String result) {
+                        Log.d(TAB, "result 5:" + result.toString());
                     }
 
                     @Override
@@ -212,44 +206,41 @@ public class MediaPlayerAudio {
 
     public void playmedias() {
         try {
-            try {
-                mediaListener.hideKeyBoard();
-                deytroy();
-                mediaListener.showProgress();
-                handlerPlayAudio = new Handler();
-                Log.d(TAB, "Play music 2");
-                mediaPlayAudio = new MediaPlayer();
-                mediaPlayAudio.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mediaPlayAudio.setDataSource(linkPlayAudio);
-                mediaPlayAudio.prepareAsync();
-                mediaListener.setEnableButton();
-                mediaPlayAudio.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.start();
-                        finalTime = mediaPlayAudio.getDuration();
-                        startTime = mediaPlayAudio.getCurrentPosition();
-                        mediaListener.setTimePlayAudio(startTime, finalTime);
-                        mediaListener.hideProgress();
-                    }
-                });
-                mediaPlayAudio.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                    @Override
-                    public boolean onError(MediaPlayer mp, int what, int extra) {
-                        return false;
-                    }
-                });
-                handlerPlayAudio.postDelayed(startRunableAudio, 0);
+            mediaListener.hideKeyBoard();
+            deytroy();
+            mediaListener.showProgress();
+            handlerPlayAudio = new Handler();
+            mediaPlayAudio = new MediaPlayer();
+            mediaPlayAudio.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayAudio.setDataSource(linkPlayAudio);
+            mediaPlayAudio.prepareAsync();
+            mediaListener.setEnableButton();
+            mediaPlayAudio.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                    finalTime = mediaPlayAudio.getDuration();
+                    startTime = mediaPlayAudio.getCurrentPosition();
+                    mediaListener.setTimePlayAudio(startTime, finalTime);
+                    mediaListener.hideProgress();
+                }
+            });
+            mediaPlayAudio.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+                @Override
+                public boolean onError(MediaPlayer mp, int what, int extra) {
+                    return false;
+                }
+            });
+            handlerPlayAudio.postDelayed(startRunableAudio, 0);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (IllegalArgumentException e1) {
-                e1.printStackTrace();
-            } catch (SecurityException e1) {
-                e1.printStackTrace();
-            } catch (IllegalStateException e1) {
-                e1.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e1) {
+            e1.printStackTrace();
+        } catch (SecurityException e1) {
+            e1.printStackTrace();
+        } catch (IllegalStateException e1) {
+            e1.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
