@@ -257,10 +257,12 @@ public class MediaPlayerAudio {
 
     public void start() {
         if (mediaPlayAudio != null && mediaPlayAudio.isPlaying() == false) {
+            mediaListener.setBackGroundButtonPlay();
             mediaPlayAudio.start();
         }
 
         if (mediaPlayeAdvertisement != null && mediaPlayeAdvertisement.isPlaying() == false) {
+            mediaListener.setBackGroundButtonPlay();
             mediaPlayeAdvertisement.start();
         }
     }
