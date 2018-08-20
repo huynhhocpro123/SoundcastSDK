@@ -27,7 +27,6 @@ import vn.mobiapps.soundcastsdk.presenter.SoundCastPresenterImpl;
 import vn.mobiapps.soundcastsdk.until.MediaPlayerAudio;
 import vn.mobiapps.soundcastsdk.view.ISourdCastViewListener;
 
-import static vn.mobiapps.soundcast.R.drawable.play;
 import static vn.mobiapps.soundcastsdk.until.Contanst.MILISECONDS;
 import static vn.mobiapps.soundcastsdk.until.Contanst.TOKEN;
 import static vn.mobiapps.soundcastsdk.until.Utils.TimeFormat;
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView listView;
     private CheckBox checkbox;
     private MediaPlayerAudio audio;
-    private String linkMP3PlayAudido = "";
+    private String linkMP3PlayAudido = "https://demo-stg.soundcast.fm/assets/audio/going-blind-court_1.mp3";
 
 
     @Override
@@ -195,11 +194,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.startPlayerBtn:
                 if (audio.mediaPlayAudio != null && audio.mediaPlayAudio.isPlaying() == true) {
-                    startPlayerBtn.setBackgroundResource(R.drawable.play);
+                    setBackGroundButtonPause();
                     audio.mediaPlayAudio.pause();
                 } else if (audio.mediaPlayAudio != null && audio.mediaPlayAudio.isPlaying() == false) {
                     audio.mediaPlayAudio.start();
-                    startPlayerBtn.setBackgroundResource(R.drawable.pause);
+                    setBackGroundButtonPlay();
                 } else if (edtNet.getText().toString().length() > 0 && edtSite.getText().toString().length() > 0 && edTag.getText().toString().length() > 0) {
                     if (checkbox.isChecked()) {
                         audio.deytroy();
@@ -261,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (arrayList != null) {
             arrayList.clear();
         }
-        startPlayerBtn.setBackgroundResource(R.drawable.pause);
         seekbarSong.setMax(finish);
         timeStart.setText(TimeFormat(start));
         timefinish.setText(TimeFormat(finish));
@@ -272,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void setBackGroundButtonPlay() {
-        startPlayerBtn.setBackgroundResource(play); /**/
+        startPlayerBtn.setBackgroundResource(R.drawable.play); /**/
     }
 
     @Override
@@ -319,7 +317,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void addThirdQuartile() {
-
         arrayList.add(getString(R.string.thirdquartile));
         adapter.notifyDataSetChanged();
     }
@@ -337,6 +334,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void updateTimeAdvertisement(int Start) {
         timeStart.setText(TimeFormat(Start));
         seekbarSong.setProgress(Start);
+        if (Start / MILISECONDS == 0) {
+            setBackGroundButtonPlay();
+        }
+
     }
 
     @Override
@@ -353,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         seekbarSong.setProgress(start);
         startPlayerBtn.setEnabled(true);
         if (start / MILISECONDS == 0) {
-            setBackGroundButtonPause();
+            setBackGroundButtonPlay();
         }
     }
 }

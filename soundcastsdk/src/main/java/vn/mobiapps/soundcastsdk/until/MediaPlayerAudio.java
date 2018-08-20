@@ -35,7 +35,6 @@ public class MediaPlayerAudio {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public MediaPlayerAudio() {
@@ -76,7 +75,6 @@ public class MediaPlayerAudio {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mp.start();
-                    mediaListener.setBackGroundButtonPause();
                     finalTime = mediaPlayeAdvertisement.getDuration();
                     startTime = mediaPlayeAdvertisement.getCurrentPosition();
                     mediaListener.addStart(startTime, finalTime);
@@ -170,6 +168,7 @@ public class MediaPlayerAudio {
                 handlerAdvertisement.removeCallbacks(UpdateSongTime);
                 mediaListener.addComplete();
                 mediaListener.hideButtonSkip();
+                mediaListener.setBackGroundButtonPause();
                 playmedias();
                 APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.COMPLETE, new ApiResponse() {
                     @Override
@@ -198,7 +197,7 @@ public class MediaPlayerAudio {
                 handlerPlayAudio.removeCallbacks(startRunableAudio);
                 mediaPlayAudio.release();
                 mediaPlayAudio = null;
-                mediaListener.setBackGroundButtonPlay();
+                mediaListener.setBackGroundButtonPause();
             }
         }
     };
@@ -248,24 +247,20 @@ public class MediaPlayerAudio {
 
     public void pause() {
         if (mediaPlayAudio != null && mediaPlayAudio.isPlaying() == true) {
-            mediaListener.setBackGroundButtonPause();
             mediaPlayAudio.pause();
         }
 
         if (mediaPlayeAdvertisement != null && mediaPlayeAdvertisement.isPlaying() == true) {
-            mediaListener.setBackGroundButtonPause();
             mediaPlayeAdvertisement.pause();
         }
     }
 
     public void start() {
         if (mediaPlayAudio != null && mediaPlayAudio.isPlaying() == false) {
-            mediaListener.setBackGroundButtonPlay();
             mediaPlayAudio.start();
         }
 
         if (mediaPlayeAdvertisement != null && mediaPlayeAdvertisement.isPlaying() == false) {
-            mediaListener.setBackGroundButtonPlay();
             mediaPlayeAdvertisement.start();
         }
     }
