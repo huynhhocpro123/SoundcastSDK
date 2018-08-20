@@ -25,7 +25,6 @@ import vn.mobiapps.soundcastsdk.model.modelview.RequestModel;
 import vn.mobiapps.soundcastsdk.presenter.ISoundCastPresenter;
 import vn.mobiapps.soundcastsdk.presenter.SoundCastPresenterImpl;
 import vn.mobiapps.soundcastsdk.until.MediaPlayerAudio;
-import vn.mobiapps.soundcastsdk.until.Utils;
 import vn.mobiapps.soundcastsdk.view.ISourdCastViewListener;
 
 import static vn.mobiapps.soundcast.R.drawable.play;
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView listView;
     private CheckBox checkbox;
     private MediaPlayerAudio audio;
-    private String linkMP3PlayAudido = "https://demo-stg.soundcast.fm/assets/audio/going-blind-court_1.mp3";
+    private String linkMP3PlayAudido = "";
 
 
     @Override
@@ -304,7 +303,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void hideKeyBoard() {
-        Utils.hideKeyboard(this);
     }
 
     @Override

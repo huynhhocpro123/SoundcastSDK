@@ -16,7 +16,7 @@ import vn.mobiapps.soundcastsdk.interfaceplayer.MediaListener;
  */
 
 public class MediaPlayerAudio {
-    public static String TAB = MediaPlayerAudio.class.getSimpleName();
+    public static String TAB = "MediaPlayerAudio";
     public MediaPlayer mediaPlayeAdvertisement = null;
     private int startTime;
     private int finalTime;
@@ -251,6 +251,7 @@ public class MediaPlayerAudio {
             mediaListener.setBackGroundButtonPause();
             mediaPlayAudio.pause();
         }
+
         if (mediaPlayeAdvertisement != null && mediaPlayeAdvertisement.isPlaying() == true) {
             mediaListener.setBackGroundButtonPause();
             mediaPlayeAdvertisement.pause();
@@ -259,10 +260,12 @@ public class MediaPlayerAudio {
 
     public void start() {
         if (mediaPlayAudio != null && mediaPlayAudio.isPlaying() == false) {
+            mediaListener.setBackGroundButtonPlay();
             mediaPlayAudio.start();
         }
 
         if (mediaPlayeAdvertisement != null && mediaPlayeAdvertisement.isPlaying() == false) {
+            mediaListener.setBackGroundButtonPlay();
             mediaPlayeAdvertisement.start();
         }
     }
