@@ -27,7 +27,6 @@ import vn.mobiapps.soundcastsdk.presenter.SoundCastPresenterImpl;
 import vn.mobiapps.soundcastsdk.until.MediaPlayerAudio;
 import vn.mobiapps.soundcastsdk.view.ISourdCastViewListener;
 
-import static vn.mobiapps.soundcastsdk.until.Contanst.MILISECONDS;
 import static vn.mobiapps.soundcastsdk.until.Contanst.TOKEN;
 import static vn.mobiapps.soundcastsdk.until.Utils.TimeFormat;
 
@@ -155,8 +154,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onErrorSendGetURL(String data) {
-        Toast.makeText(this, data, Toast.LENGTH_SHORT).show();
+    public void onErrorSendGetURL(final String data) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (data != null) {
+                    Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -172,7 +178,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onErrorParserXML(String data) {
+    public void onErrorParserXML(final String data) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (data != null) {
+                    Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
 
@@ -334,10 +348,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void updateTimeAdvertisement(int Start) {
         timeStart.setText(TimeFormat(Start));
         seekbarSong.setProgress(Start);
-        if (Start / MILISECONDS == 0) {
-            setBackGroundButtonPlay();
-        }
-
     }
 
     @Override
@@ -353,8 +363,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         timeStart.setText(TimeFormat(start));
         seekbarSong.setProgress(start);
         startPlayerBtn.setEnabled(true);
-        if (start / MILISECONDS == 0) {
-            setBackGroundButtonPlay();
-        }
+    }
+
+    @Override
+    public void onSuccessStart(String data) {
+
+    }
+
+    @Override
+    public void onSuccessFirstQuartile(String data) {
+
+    }
+
+    @Override
+    public void onSuccessMidPoint(String data) {
+
+    }
+
+    @Override
+    public void onSuccessThirdQuartile(String data) {
+
+    }
+
+    @Override
+    public void onSuccessComplete(String data) {
+
     }
 }

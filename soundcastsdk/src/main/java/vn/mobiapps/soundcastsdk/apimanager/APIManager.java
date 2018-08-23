@@ -23,6 +23,9 @@ import javax.net.ssl.HttpsURLConnection;
 
 import vn.mobiapps.soundcastsdk.model.modeldata.DataParserXMLModel;
 
+import static vn.mobiapps.soundcastsdk.until.Contanst.ERROR;
+import static vn.mobiapps.soundcastsdk.until.Contanst.ERRORParserXML;
+
 /**
  * Created by NguyenTanHuynh on 7/19/2018.
  */
@@ -62,9 +65,12 @@ public class APIManager {
                                 }
                             }
                             listener.onSuccess(response.toString());
+                        } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                            listener.onError(ERROR);
                         } else {
                             listener.onError("Error");
                         }
+
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -123,8 +129,10 @@ public class APIManager {
                                 }
                             }
                             listener.onSuccess(response.toString());
+                        } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+                            listener.onError(ERROR);
                         } else {
-                            listener.onError("Error");
+                            listener.onError("ERROR");
                         }
                     } catch (MalformedURLException e) {
                         e.printStackTrace();
@@ -169,16 +177,16 @@ public class APIManager {
                                 intension = xmlPullParser.getText().trim();
                                 break;
                             case XmlPullParser.END_TAG:
-                                String thedong = xmlPullParser.getName();
-                                if (thedong.equals("Duration")) {
+                                String xmltag = xmlPullParser.getName();
+                                if (xmltag.equals("Duration")) {
                                     content = intension;
-                                } else if (thedong.equals("MediaFile")) {
+                                } else if (xmltag.equals("MediaFile")) {
                                     listLink.add(intension);
-                                } else if (thedong.equals("Impression")) {
+                                } else if (xmltag.equals("Impression")) {
                                     impressionTrack = intension;
-                                } else if (thedong.equals("ClickTracking")) {
+                                } else if (xmltag.equals("ClickTracking")) {
                                     clickTrack = intension;
-                                } else if (thedong.equals("ClickThrough")) {
+                                } else if (xmltag.equals("ClickThrough")) {
                                     clickThrough = intension;
                                 }
                                 break;
@@ -194,7 +202,7 @@ public class APIManager {
                     if (model != null) {
                         listener.onSuccess(model);
                     } else {
-                        listener.onError("Error null");
+                        listener.onError(ERRORParserXML);
                     }
                 } catch (MalformedURLException e) {
                     e.printStackTrace();

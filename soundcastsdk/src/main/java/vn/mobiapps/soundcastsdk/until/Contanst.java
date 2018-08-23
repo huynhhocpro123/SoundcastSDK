@@ -8,6 +8,8 @@ public class Contanst {
 
     public static String TOKEN;
     public static final String URLRQUEST = "https://e-stg.api.soundcast.fm/e?token=";
+    public static final String ERROR = "Error Resource NotFound";
+    public static final String ERRORParserXML = "Can not ParserXML";
     public static final int MILISECONDS = 1000;
     public static final String URLRQ = "https://delivery-stg.api.soundcast.fm/network/";
     public static final String START = "&name=start";

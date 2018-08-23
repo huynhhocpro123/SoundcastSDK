@@ -7,7 +7,7 @@ package vn.mobiapps.soundcastsdk.interfaceplayer;
 public interface MediaListener {
     void updateTimeAdvertisement(int Start);
 
-    void addStart(int start,int finish);
+    void addStart(int start, int finish);
 
     void addFirstQuartile();
 
@@ -17,7 +17,7 @@ public interface MediaListener {
 
     void addComplete();
 
-    void setTimePlayAudio(int start,int finish);
+    void setTimePlayAudio(int start, int finish);
 
     void updateTimePlayAudio(int start);
 
@@ -38,4 +38,14 @@ public interface MediaListener {
     void showProgress();
 
     void hideProgress();
+
+    void onSuccessStart(String data);
+
+    void onSuccessFirstQuartile(String data);
+
+    void onSuccessMidPoint(String data);
+
+    void onSuccessThirdQuartile(String data);
+
+    void onSuccessComplete(String data);
 }

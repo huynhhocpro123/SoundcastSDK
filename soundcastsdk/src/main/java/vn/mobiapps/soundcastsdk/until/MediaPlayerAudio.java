@@ -11,6 +11,8 @@ import vn.mobiapps.soundcastsdk.apimanager.APIManager;
 import vn.mobiapps.soundcastsdk.apimanager.ApiResponse;
 import vn.mobiapps.soundcastsdk.interfaceplayer.MediaListener;
 
+import static vn.mobiapps.soundcastsdk.until.Contanst.MILISECONDS;
+
 /**
  * Created by NguyenTanHuynh on 7/30/2018.
  */
@@ -70,7 +72,12 @@ public class MediaPlayerAudio {
             handlerAdvertisement = new Handler();
             mediaPlayeAdvertisement.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayeAdvertisement.setDataSource(url);
-            mediaPlayeAdvertisement.prepareAsync();
+            mediaPlayeAdvertisement.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mediaPlayeAdvertisement.release();
+                }
+            });
             mediaPlayeAdvertisement.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -82,6 +89,7 @@ public class MediaPlayerAudio {
                         @Override
                         public void onSuccess(String result) {
                             Log.d(TAB, "result 1:" + result.toString());
+                            mediaListener.onSuccessStart(result.toString());
                         }
 
                         @Override
@@ -94,12 +102,7 @@ public class MediaPlayerAudio {
                     mediaListener.hideProgress();
                 }
             });
-            mediaPlayeAdvertisement.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-                    return false;
-                }
-            });
+            mediaPlayeAdvertisement.prepareAsync();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -118,29 +121,34 @@ public class MediaPlayerAudio {
         public void run() {
             startTime = mediaPlayeAdvertisement.getCurrentPosition();
             mediaListener.updateTimeAdvertisement(startTime);
+            if (startTime / MILISECONDS == 0) {
+                mediaListener.setBackGroundButtonPlay();
+            }
             if (mediaPlayeAdvertisement.isPlaying() == true) {
                 mediaListener.setNotEnableButton();
             }
-            if (startTime / Contanst.MILISECONDS > 0) {
-                if (startTime / Contanst.MILISECONDS == (finalTime / Contanst.MILISECONDS) / 4) {
+            if (startTime / MILISECONDS > 0) {
+                if (startTime / MILISECONDS == (finalTime / MILISECONDS) / 4) {
                     mediaListener.addFirstQuartile();
                     mediaListener.showButtonSkip();
                     APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.FIRSTQUARTILE, new ApiResponse() {
                         @Override
                         public void onSuccess(String result) {
                             Log.d(TAB, "result 2:" + result.toString());
+                            mediaListener.onSuccessFirstQuartile(result.toString());
                         }
 
                         @Override
                         public void onError(String error) {
                         }
                     });
-                } else if (startTime / Contanst.MILISECONDS == (finalTime / Contanst.MILISECONDS) / 2) {
+                } else if (startTime / MILISECONDS == (finalTime / MILISECONDS) / 2) {
                     mediaListener.addMidPoint();
                     APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.MIDPOINT, new ApiResponse() {
                         @Override
                         public void onSuccess(String result) {
                             Log.d(TAB, "result 3:" + result.toString());
+                            mediaListener.onSuccessMidPoint(result.toString());
                         }
 
                         @Override
@@ -148,12 +156,13 @@ public class MediaPlayerAudio {
 
                         }
                     });
-                } else if (startTime / Contanst.MILISECONDS == (finalTime * 3 / 4) / Contanst.MILISECONDS) {
+                } else if (startTime / MILISECONDS == (finalTime * 3 / 4) / MILISECONDS) {
                     mediaListener.addThirdQuartile();
                     APIManager.sendGet(Contanst.URLRQUEST + Contanst.TOKEN + Contanst.THIRDQUARTILE, new ApiResponse() {
                         @Override
                         public void onSuccess(String result) {
                             Log.d(TAB, "result 4:" + result.toString());
+                            mediaListener.onSuccessThirdQuartile(result.toString());
                         }
 
                         @Override
@@ -163,8 +172,8 @@ public class MediaPlayerAudio {
                     });
                 }
             }
-            handlerAdvertisement.postDelayed(this, Contanst.MILISECONDS);
-            if (startTime / Contanst.MILISECONDS == finalTime / Contanst.MILISECONDS) {
+            handlerAdvertisement.postDelayed(this, MILISECONDS);
+            if (startTime / MILISECONDS == finalTime / MILISECONDS) {
                 handlerAdvertisement.removeCallbacks(UpdateSongTime);
                 mediaListener.addComplete();
                 mediaListener.hideButtonSkip();
@@ -174,6 +183,7 @@ public class MediaPlayerAudio {
                     @Override
                     public void onSuccess(String result) {
                         Log.d(TAB, "result 5:" + result.toString());
+                        mediaListener.onSuccessComplete(result.toString());
                     }
 
                     @Override
@@ -192,8 +202,8 @@ public class MediaPlayerAudio {
             startTime = mediaPlayAudio.getCurrentPosition();
             finalTime = mediaPlayAudio.getDuration();
             mediaListener.updateTimePlayAudio(startTime);
-            handlerPlayAudio.postDelayed(this, Contanst.MILISECONDS);
-            if (startTime / Contanst.MILISECONDS == finalTime / Contanst.MILISECONDS) {
+            handlerPlayAudio.postDelayed(this, MILISECONDS);
+            if (startTime / MILISECONDS == finalTime / MILISECONDS) {
                 handlerPlayAudio.removeCallbacks(startRunableAudio);
                 mediaPlayAudio.release();
                 mediaPlayAudio = null;
@@ -212,8 +222,13 @@ public class MediaPlayerAudio {
             mediaPlayAudio = new MediaPlayer();
             mediaPlayAudio.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayAudio.setDataSource(linkPlayAudio);
-            mediaPlayAudio.prepareAsync();
             mediaListener.setEnableButton();
+            mediaPlayAudio.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    mediaPlayAudio.release();
+                }
+            });
             mediaPlayAudio.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
@@ -221,17 +236,11 @@ public class MediaPlayerAudio {
                     finalTime = mediaPlayAudio.getDuration();
                     startTime = mediaPlayAudio.getCurrentPosition();
                     mediaListener.setTimePlayAudio(startTime, finalTime);
+                    handlerPlayAudio.postDelayed(startRunableAudio, 0);
                     mediaListener.hideProgress();
                 }
             });
-            mediaPlayAudio.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-                    return false;
-                }
-            });
-            handlerPlayAudio.postDelayed(startRunableAudio, 0);
-
+            mediaPlayAudio.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException e1) {
