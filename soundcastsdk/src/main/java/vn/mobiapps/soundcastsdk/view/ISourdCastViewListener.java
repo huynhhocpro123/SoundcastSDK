@@ -4,7 +4,7 @@ package vn.mobiapps.soundcastsdk.view;
 import vn.mobiapps.soundcastsdk.model.modeldata.DataParserXMLModel;
 
 /**
- * Created by NguyenTanHuynh on 7/30/2018.
+ * Created by soundcast on 7/30/2018.
  */
 
 public interface ISourdCastViewListener {

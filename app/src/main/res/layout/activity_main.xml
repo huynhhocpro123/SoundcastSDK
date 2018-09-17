@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="vn.mobiapps.soundcast.view.MainActivity">
+    tools:context="soundcast.mobiapps.vn.soundcastsdkjava.MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +52,6 @@
                     android:background="@drawable/custom_input"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:maxLength="2"
                     android:paddingLeft="10dp"
                     android:text="1" />
             </LinearLayout>
@@ -80,7 +81,6 @@
                     android:background="@drawable/custom_input"
                     android:imeOptions="actionNext"
                     android:inputType="number"
-                    android:maxLength="2"
                     android:paddingLeft="10dp"
                     android:text="1" />
             </LinearLayout>
@@ -109,7 +109,6 @@
                     android:background="@drawable/custom_input"
                     android:imeOptions="actionDone"
                     android:inputType="number"
-                    android:maxLength="2"
                     android:paddingLeft="10dp"
                     android:text="1" />
             </LinearLayout>
@@ -117,6 +116,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -124,27 +124,45 @@
                     android:id="@+id/checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="false"
                     android:gravity="center" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+
                     android:gravity="center"
                     android:text="mode text (pub statique)"
                     android:textColor="@color/colorBlack"
-                    android:textSize="15sp" />
+                    android:textSize="13sp" />
+
+                <CheckBox
+                    android:id="@+id/checkboxMidscroll"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:checked="false"
+                    android:gravity="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="mid-roll"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="13sp" />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/txtSkip"
-                android:visibility="gone"
-                android:text="Skip Ad"
-                android:textSize="15sp"
-                android:layout_marginRight="20dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="right|center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:gravity="right|center"
+                android:text="Skip Ad"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="15sp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -186,7 +204,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="00:30"
+                    android:text="00:00"
                     android:textColor="@color/colorBlack"
                     android:textSize="15sp" />
             </LinearLayout>
@@ -213,4 +231,5 @@
         </LinearLayout>
 
     </FrameLayout>
+
 </LinearLayout>

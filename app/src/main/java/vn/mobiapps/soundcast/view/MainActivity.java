@@ -24,15 +24,16 @@ import vn.mobiapps.soundcastsdk.model.modeldata.ModelResponse;
 import vn.mobiapps.soundcastsdk.model.modelview.RequestModel;
 import vn.mobiapps.soundcastsdk.presenter.ISoundCastPresenter;
 import vn.mobiapps.soundcastsdk.presenter.SoundCastPresenterImpl;
-import vn.mobiapps.soundcastsdk.until.MediaPlayerAudio;
+import vn.mobiapps.soundcastsdk.until.SoundCastManager;
 import vn.mobiapps.soundcastsdk.view.ISourdCastViewListener;
 
+import static vn.mobiapps.soundcastsdk.until.Contanst.CHECKAUDIO;
+import static vn.mobiapps.soundcastsdk.until.Contanst.SECONDS;
 import static vn.mobiapps.soundcastsdk.until.Contanst.TOKEN;
+import static vn.mobiapps.soundcastsdk.until.Contanst.URLADVERTISEMENT;
 import static vn.mobiapps.soundcastsdk.until.Utils.TimeFormat;
 
-
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ISourdCastViewListener, MediaListener {
-    private DataParserXMLModel dataParserXMLModel;
     private ISoundCastPresenter presenter;
     private Button startPlayerBtn;
     private EditText edtNet, edtSite, edTag;
@@ -42,8 +43,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<String> arrayList;
     private ArrayAdapter<String> adapter;
     private ListView listView;
-    private CheckBox checkbox;
-    private MediaPlayerAudio audio;
+    private CheckBox checkbox, checkboxMidscroll;
+    private SoundCastManager manager;
     private String linkMP3PlayAudido = "https://demo-stg.soundcast.fm/assets/audio/going-blind-court_1.mp3";
 
 
@@ -85,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (audio.mediaPlayeAdvertisement == null && audio.mediaPlayAudio != null) {
-                    audio.mediaPlayAudio.seekTo(seekBar.getProgress());
+                if (manager.mediaPlayeAdvertisement == null && manager.mediaPlayAudio != null) {
+                    manager.mediaPlayAudio.seekTo(seekBar.getProgress());
                 }
             }
         });
@@ -95,13 +96,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-        audio.pause();
+        manager.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        audio.start();
+        manager.start();
         hideKeyBoard();
     }
 
@@ -116,13 +117,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progress = (LinearLayout) findViewById(R.id.progress);
         listView = (ListView) findViewById(R.id.listView);
         checkbox = (CheckBox) findViewById(R.id.checkbox);
+        checkboxMidscroll = (CheckBox) findViewById(R.id.checkboxMidscroll);
         txtSkip = (TextView) findViewById(R.id.txtSkip);
         arrayList = new ArrayList<>();
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(adapter);
 
         //Play Audio
-        audio = new MediaPlayerAudio(this, linkMP3PlayAudido);
+        manager = new SoundCastManager(this, linkMP3PlayAudido);
     }
 
     public void showProgress() {
@@ -144,25 +146,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onSuccessSendGetURL(final String data) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                responeData(data);
-            }
-        });
-    }
-
-    @Override
-    public void onErrorSendGetURL(final String data) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (data != null) {
-                    Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+    public void midCroll(boolean check, int second) {
+        CHECKAUDIO = check;
+        SECONDS = second;
     }
 
     @Override
@@ -202,33 +188,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onSuccessSendGetURL(final String data) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                responeData(data);
+            }
+        });
+    }
+
+    @Override
+    public void onErrorSendGetURL(final String data) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (data != null) {
+                    Toast.makeText(MainActivity.this, data, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.startPlayerBtn:
-                if (audio.mediaPlayAudio != null && audio.mediaPlayAudio.isPlaying() == true) {
-                    setBackGroundButtonPause();
-                    audio.mediaPlayAudio.pause();
-                } else if (audio.mediaPlayAudio != null && audio.mediaPlayAudio.isPlaying() == false) {
-                    audio.mediaPlayAudio.start();
-                    setBackGroundButtonPlay();
+                if (manager.mediaPlayeAdvertisement != null && manager.mediaPlayeAdvertisement.isPlaying() == true) {
+                    manager.pause();
+                } else if (manager.mediaPlayeAdvertisement != null && manager.mediaPlayeAdvertisement.isPlaying() == false) {
+                    manager.start();
+                } else if (manager.mediaPlayAudio != null && manager.mediaPlayAudio.isPlaying() == true) {
+                    manager.pause();
+                } else if (manager.mediaPlayAudio != null && manager.mediaPlayAudio.isPlaying() == false) {
+                    manager.start();
                 } else if (edtNet.getText().toString().length() > 0 && edtSite.getText().toString().length() > 0 && edTag.getText().toString().length() > 0) {
-                    if (checkbox.isChecked()) {
-                        audio.deytroy();
-                        RequestModel requestModel = new RequestModel();
-                        requestModel.networkID = edtNet.getText().toString();
-                        requestModel.siteID = edtSite.getText().toString();
-                        requestModel.tagID = edTag.getText().toString();
-                        requestModel.pageTitle = "NRJ";
-                        requestModel.pageDescription = "null";
-                        requestModel.keywords = "null";
-                        requestModel.pageUrl = "https%3A%2F%2Fdemo-stg.soundcast.fm%2F";
-                        requestModel.tags = "null";
-                        requestModel.test = "true";
-                        presenter.sendGetURL(requestModel);
+                    if (checkbox.isChecked() && checkboxMidscroll.isChecked() == false) {
+                        sendPresenter();
+                    } else if (checkbox.isChecked() && checkboxMidscroll.isChecked()) {
+                        midCroll(true, 15);
+                        sendPresenter();
                     } else {
-                        audio.deytroy();
                         if (arrayList != null) {
                             arrayList.clear();
                         }
@@ -236,19 +237,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         arrayList.add(getString(R.string.Error));
                         arrayList.add(getString(R.string.audio));
                         adapter.notifyDataSetChanged();
-                        audio.playmedias();
-                        startPlayerBtn.setEnabled(false);
+                        manager.playmedias();
                     }
                 }
                 break;
             case R.id.txtSkip:
-                if (audio.mediaPlayeAdvertisement != null) {
-                    audio.deytroy();
-                    txtSkip.setVisibility(View.GONE);
-                    audio.playmedias();
-                }
+                manager.skipAuio();
                 break;
         }
+    }
+
+    private void sendPresenter() {
+        RequestModel requestModel = new RequestModel();
+        requestModel.networkID = edtNet.getText().toString();
+        requestModel.siteID = edtSite.getText().toString();
+        requestModel.tagID = edTag.getText().toString();
+        requestModel.pageTitle = "NRJ";
+        requestModel.pageDescription = "null";
+        requestModel.keywords = "null";
+        requestModel.pageUrl = "https%3A%2F%2Fdemo-stg.soundcast.fm%2F";
+        requestModel.tags = "null";
+        requestModel.test = "true";
+        presenter.loadAd(requestModel);
     }
 
 
@@ -260,26 +270,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void updateData(final DataParserXMLModel model) {
         try {
-            dataParserXMLModel = model;
-            if (dataParserXMLModel.link.get(0).toString() != null) {
-                audio.playAdvertisement(dataParserXMLModel.link.get(0).toString());
+            if (model.link.get(0).toString() != null) {
+                URLADVERTISEMENT = model.link.get(0).toString();
+                manager.playAdvertisement(model.link.get(0).toString());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void addStart(int start, int finish) {
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-        seekbarSong.setMax(finish);
-        timeStart.setText(TimeFormat(start));
-        timefinish.setText(TimeFormat(finish));
-        seekbarSong.setProgress(start);
-        arrayList.add(getString(R.string.start));
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -293,17 +290,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void setEnableButton() {
-        startPlayerBtn.setEnabled(true);
-    }
-
-    @Override
-    public void setNotEnableButton() {
-        startPlayerBtn.setEnabled(false);
-    }
-
-
-    @Override
     public void showButtonSkip() {
         txtSkip.setVisibility(View.VISIBLE);
     }
@@ -315,6 +301,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void hideKeyBoard() {
+    }
+
+    @Override
+    public void callAd(int start, int finish) {
+        if (arrayList != null) {
+            arrayList.clear();
+        }
+        arrayList.add(getString(R.string.callAd));
+        adapter.notifyDataSetChanged();
+        seekbarSong.setMax(finish);
+        timeStart.setText(TimeFormat(start));
+        timefinish.setText(TimeFormat(finish));
+        seekbarSong.setProgress(start);
+    }
+
+    @Override
+    public void addStart() {
+        arrayList.add(getString(R.string.start));
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -340,8 +345,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         arrayList.add(getString(R.string.complete));
         adapter.notifyDataSetChanged();
         listView.setSelection(arrayList.size());
-        txtSkip.setVisibility(View.GONE);
-        audio.playmedias();
     }
 
     @Override
@@ -362,31 +365,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void updateTimePlayAudio(int start) {
         timeStart.setText(TimeFormat(start));
         seekbarSong.setProgress(start);
-        startPlayerBtn.setEnabled(true);
-    }
-
-    @Override
-    public void onSuccessStart(String data) {
-
-    }
-
-    @Override
-    public void onSuccessFirstQuartile(String data) {
-
-    }
-
-    @Override
-    public void onSuccessMidPoint(String data) {
-
-    }
-
-    @Override
-    public void onSuccessThirdQuartile(String data) {
-
-    }
-
-    @Override
-    public void onSuccessComplete(String data) {
-
     }
 }

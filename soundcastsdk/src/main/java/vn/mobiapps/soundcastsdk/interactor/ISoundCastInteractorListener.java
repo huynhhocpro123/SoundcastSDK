@@ -3,7 +3,7 @@ package vn.mobiapps.soundcastsdk.interactor;
 import vn.mobiapps.soundcastsdk.model.modeldata.DataParserXMLModel;
 
 /**
- * Created by NguyenTanHuynh on 7/30/2018.
+ * Created by soundcast on 7/30/2018.
  */
 
 public interface ISoundCastInteractorListener {

@@ -5,10 +5,11 @@ import vn.mobiapps.soundcastsdk.apimanager.ApiResponse;
 import vn.mobiapps.soundcastsdk.model.modeldata.DataParserXMLModel;
 import vn.mobiapps.soundcastsdk.model.modelview.RequestModel;
 
+import static vn.mobiapps.soundcastsdk.until.Contanst.SECTIONTIMEOUT;
 import static vn.mobiapps.soundcastsdk.until.Contanst.URLRQ;
 
 /**
- * Created by NguyenTanHuynh on 7/30/2018.
+ * Created by soundcast on 7/30/2018.
  */
 
 public class SoundCastInteractorImpl implements ISoundCastInteractor {
@@ -27,9 +28,9 @@ public class SoundCastInteractorImpl implements ISoundCastInteractor {
     }
 
     @Override
-    public void sendGetURL(RequestModel requestModel) {
-        String URL = URLRQ + requestModel.networkID + "/site/" + requestModel.siteID + "/tag/" + requestModel.tagID + "?pageTitle=" + requestModel.pageTitle + "&pageDescription=" + requestModel.pageDescription + "&keywords=" + requestModel.keywords + "&pageUrl=" + requestModel.pageUrl + "&tags=" + requestModel.tags + "&test=" + requestModel.test;
-        APIManager.sendGet(URL, new ApiResponse() {
+    public void loadAd(RequestModel requestModel) {
+        String URL = URLRQ + requestModel.networkID+ "/site/" + requestModel.siteID + "/tag/" + requestModel.tagID + "?pageTitle=" + requestModel.pageTitle + "&pageDescription=" + requestModel.pageDescription + "&keywords=" + requestModel.keywords + "&pageUrl=" + requestModel.pageUrl + "&tags=" + requestModel.tags + "&test=" + requestModel.test;
+        APIManager.sendGet(SECTIONTIMEOUT,URL, new ApiResponse() {
             @Override
             public void onSuccess(String result) {
                 interactorListener.onSuccessSendGetURL(result);

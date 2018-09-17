@@ -3,7 +3,7 @@ package vn.mobiapps.soundcastsdk.apimanager;
 import vn.mobiapps.soundcastsdk.model.modeldata.DataParserXMLModel;
 
 /**
- * Created by NguyenTanHuynh on 7/18/2018.
+ * Created by soundcast on 7/18/2018.
  */
 
 public interface ApiResponse{

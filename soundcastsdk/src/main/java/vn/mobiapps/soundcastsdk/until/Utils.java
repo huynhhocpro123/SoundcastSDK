@@ -3,7 +3,7 @@ package vn.mobiapps.soundcastsdk.until;
 import java.text.SimpleDateFormat;
 
 /**
- * Created by NguyenTanHuynh on 7/30/2018.
+ * Created by soundcast on 7/30/2018.
  */
 
 public class Utils {

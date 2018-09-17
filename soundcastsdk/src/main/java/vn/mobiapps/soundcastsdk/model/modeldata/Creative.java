@@ -3,7 +3,7 @@ package vn.mobiapps.soundcastsdk.model.modeldata;
 import java.util.ArrayList;
 
 /**
- * Created by NguyenTanHuynh on 7/19/2018.
+ * Created by soundcast on 7/19/2018.
  */
 
 public class Creative {

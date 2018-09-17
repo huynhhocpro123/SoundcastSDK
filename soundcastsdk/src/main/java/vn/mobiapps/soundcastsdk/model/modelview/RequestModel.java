@@ -1,7 +1,7 @@
 package vn.mobiapps.soundcastsdk.model.modelview;
 
 /**
- * Created by NguyenTanHuynh on 8/14/2018.
+ * Created by soundcast on 8/14/2018.
  */
 
 public class RequestModel {

@@ -21,6 +21,36 @@ android {
     }
 }
 
+ext {
+    bintrayRepo = 'SoundcastSDK' //the maven repo name (created on bintray)
+    bintrayName = 'vn.mobiapps.soundcastsdk' //the name you want to give at your project on bintray
+    orgName = 'huynhnguyen' //your user name
+
+    publishedGroupId = 'vn.mobiapps.soundcastsdk' //aaaa : the librairy group
+    artifact = 'soundcastsdk' //BBBB : the library name
+    libraryVersion = "1.1.2" //the librairy version
+
+    //the library will be : aaaa:BBBB:version
+
+    libraryName = 'SoundcastSDK'
+    libraryDescription = 'Sdk soundcast android endless inspiration'
+
+    siteUrl = 'https://github.com/huynhhocpro123/SoundcastSDK'
+    gitUrl = 'https://github.com/huynhhocpro123/SoundcastSDK.git'
+
+    developerId = 'huynhnguyen'
+    developerName = 'Nguyễn Tấn Huỳnh'
+    developerEmail = 'huynhhocpro123@gmail.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
+apply from: rootProject.file('gradle/install-v1.gradle')
+apply from: rootProject.file('gradle/bintray-android-v1.gradle')
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {

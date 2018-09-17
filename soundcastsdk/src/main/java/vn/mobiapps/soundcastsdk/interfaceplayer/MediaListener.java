@@ -1,13 +1,15 @@
 package vn.mobiapps.soundcastsdk.interfaceplayer;
 
 /**
- * Created by NguyenTanHuynh on 7/30/2018.
+ * Created by soundcast on 7/30/2018.
  */
 
 public interface MediaListener {
     void updateTimeAdvertisement(int Start);
+    
+    void callAd(int start, int finish);
 
-    void addStart(int start, int finish);
+    void addStart();
 
     void addFirstQuartile();
 
@@ -25,10 +27,6 @@ public interface MediaListener {
 
     void setBackGroundButtonPause();
 
-    void setEnableButton();
-
-    void setNotEnableButton();
-
     void showButtonSkip();
 
     void hideButtonSkip();
@@ -39,13 +37,5 @@ public interface MediaListener {
 
     void hideProgress();
 
-    void onSuccessStart(String data);
-
-    void onSuccessFirstQuartile(String data);
-
-    void onSuccessMidPoint(String data);
-
-    void onSuccessThirdQuartile(String data);
-
-    void onSuccessComplete(String data);
+    void midCroll(boolean check, int second);
 }

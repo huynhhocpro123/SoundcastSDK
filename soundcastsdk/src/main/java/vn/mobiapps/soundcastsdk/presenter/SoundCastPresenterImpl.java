@@ -9,7 +9,7 @@ import vn.mobiapps.soundcastsdk.view.ISourdCastViewListener;
 
 
 /**
- * Created by NguyenTanHuynh on 7/30/2018.
+ * Created by soundcast on 7/30/2018.
  */
 
 public class SoundCastPresenterImpl implements ISoundCastPresenter, ISoundCastInteractorListener {
@@ -30,9 +30,9 @@ public class SoundCastPresenterImpl implements ISoundCastPresenter, ISoundCastIn
 
 
     @Override
-    public void sendGetURL(RequestModel requestModel) {
+    public void loadAd(RequestModel requestModel) {
         viewListener.showProgress();
-        interactor.sendGetURL(requestModel);
+        interactor.loadAd(requestModel);
     }
 
     @Override

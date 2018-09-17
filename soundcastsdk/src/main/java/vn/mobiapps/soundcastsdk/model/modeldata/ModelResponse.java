@@ -1,7 +1,7 @@
 package vn.mobiapps.soundcastsdk.model.modeldata;
 
 /**
- * Created by NguyenTanHuynh on 7/19/2018.
+ * Created by soundcast on 7/19/2018.
  */
 
 public class ModelResponse {
