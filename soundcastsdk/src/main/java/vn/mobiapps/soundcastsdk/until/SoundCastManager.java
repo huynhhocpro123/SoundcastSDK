@@ -114,7 +114,7 @@ public class SoundCastManager {
                         mediaListener.showButtonSkip();
                     } else if (startTime / MILISECONDS == (finalTime / MILISECONDS) / 2) {
                         MidpointAdvertisement();
-                    } else if (startTime / MILISECONDS == (finalTime) * (3 / 4) / MILISECONDS) {
+                    } else if (startTime / MILISECONDS == (finalTime * 3 / 4) / MILISECONDS) {
                         ThirdQuarTileAdvertisement();
                     }
                 }
