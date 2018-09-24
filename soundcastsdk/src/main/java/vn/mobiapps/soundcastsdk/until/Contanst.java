@@ -28,4 +28,12 @@ public class Contanst {
     public static final String COMPLETE = "&name=complete";
     public static boolean CHECKAUDIO = false;
     public static int SECONDS = 0;
+    public static String EVENTSKIP = "skip";
+    public static String EVENTSTART = "start";
+    public static String EVENTPAUSE = "pause";
+    public static String EVENTRESUME = "resume";
+    public static String EVENTFIRSTQUARTILE = "firstQuartile";
+    public static String EVENTMIDPOINT = "midpoint";
+    public static String EVENTTHIRDQUARTILE = "thirdQuartile";
+    public static String EVENTCOMPLETE = "complete";
 }

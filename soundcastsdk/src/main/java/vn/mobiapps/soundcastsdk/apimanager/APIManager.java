@@ -169,8 +169,8 @@ public class APIManager {
                     DataParserXMLModel model = null;
                     InputStream inputStream;
                     ArrayList<String> listLink = null;
-//                    URL obj = new URL(url);
-                    URL obj = new URL("http://x3.instreamatic.com/v2/daast/777.xml?preview=11");
+                    URL obj = new URL(url);
+//                    URL obj = new URL("http://x3.instreamatic.com/v2/daast/777.xml?preview=11");
                     HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
                     urlConnection.connect();
                     inputStream = urlConnection.getInputStream();

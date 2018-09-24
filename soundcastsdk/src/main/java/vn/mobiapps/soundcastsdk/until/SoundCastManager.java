@@ -11,11 +11,25 @@ import vn.mobiapps.soundcastsdk.apimanager.ApiResponse;
 import vn.mobiapps.soundcastsdk.interfaceplayer.MediaListener;
 
 import static vn.mobiapps.soundcastsdk.until.Contanst.CHECKAUDIO;
+import static vn.mobiapps.soundcastsdk.until.Contanst.COMPLETE;
 import static vn.mobiapps.soundcastsdk.until.Contanst.DATA;
+import static vn.mobiapps.soundcastsdk.until.Contanst.EVENTCOMPLETE;
+import static vn.mobiapps.soundcastsdk.until.Contanst.EVENTFIRSTQUARTILE;
+import static vn.mobiapps.soundcastsdk.until.Contanst.EVENTMIDPOINT;
+import static vn.mobiapps.soundcastsdk.until.Contanst.EVENTPAUSE;
+import static vn.mobiapps.soundcastsdk.until.Contanst.EVENTRESUME;
+import static vn.mobiapps.soundcastsdk.until.Contanst.EVENTSKIP;
+import static vn.mobiapps.soundcastsdk.until.Contanst.EVENTSTART;
+import static vn.mobiapps.soundcastsdk.until.Contanst.EVENTTHIRDQUARTILE;
+import static vn.mobiapps.soundcastsdk.until.Contanst.MIDPOINT;
 import static vn.mobiapps.soundcastsdk.until.Contanst.MILISECONDS;
 import static vn.mobiapps.soundcastsdk.until.Contanst.SECONDS;
+import static vn.mobiapps.soundcastsdk.until.Contanst.SKIP;
+import static vn.mobiapps.soundcastsdk.until.Contanst.THIRDQUARTILE;
 import static vn.mobiapps.soundcastsdk.until.Contanst.TIMEOUT;
+import static vn.mobiapps.soundcastsdk.until.Contanst.TOKEN;
 import static vn.mobiapps.soundcastsdk.until.Contanst.URLADVERTISEMENT;
+import static vn.mobiapps.soundcastsdk.until.Contanst.URLRQUEST;
 
 /**
  * Created by soundcast  on 7/30/2018.
@@ -64,7 +78,6 @@ public class SoundCastManager {
                     finalTime = mediaPlayeAdvertisement.getDuration();
                     startTime = mediaPlayeAdvertisement.getCurrentPosition();
                     mediaListener.callAd(startTime, finalTime);
-
                     if (startTime / MILISECONDS == 0) {
                         StartAdvertisement();
                     }
@@ -300,9 +313,20 @@ public class SoundCastManager {
     }
 
     private void StartAdvertisement() {
-        if (DATA != null && DATA.get("start") != null) {
-            mediaListener.addStart();
-            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get("start")), new ApiResponse() {
+        mediaListener.addStart();
+        APIManager.sendGet(TIMEOUT, URLRQUEST + TOKEN + Contanst.START, new ApiResponse() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("result StartTOKEN =  " + result.toString());
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("error StartTOKEN =  " + error.toString());
+            }
+        });
+        if (DATA != null && DATA.get(EVENTSTART) != null) {
+            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get(EVENTSTART)), new ApiResponse() {
                 @Override
                 public void onSuccess(String result) {
                     System.out.println("result Start =  " + result.toString());
@@ -317,9 +341,21 @@ public class SoundCastManager {
     }
 
     private void MidpointAdvertisement() {
-        if (DATA != null && DATA.get("midpoint") != null) {
-            mediaListener.addMidPoint();
-            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get("midpoint")), new ApiResponse() {
+        mediaListener.addMidPoint();
+        APIManager.sendGet(TIMEOUT, URLRQUEST + TOKEN + MIDPOINT, new ApiResponse() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("result MidpointTOKEN =  " + result.toString());
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("error MidpointTOKEN =  " + error.toString());
+
+            }
+        });
+        if (DATA != null && DATA.get(EVENTMIDPOINT) != null) {
+            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get(EVENTMIDPOINT)), new ApiResponse() {
                 @Override
                 public void onSuccess(String result) {
                     System.out.println("result Midpoint =  " + result.toString());
@@ -335,9 +371,20 @@ public class SoundCastManager {
     }
 
     private void FirstQuarTileAdvertisement() {
-        if (DATA != null && DATA.get("firstQuartile") != null) {
-            mediaListener.addFirstQuartile();
-            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get("firstQuartile")), new ApiResponse() {
+        mediaListener.addFirstQuartile();
+        APIManager.sendGet(TIMEOUT, URLRQUEST + TOKEN + Contanst.FIRSTQUARTILE, new ApiResponse() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("result FirstQuarTileTOKEN =  " + result.toString());
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("error FirstQuarTileTOKEN =  " + error.toString());
+            }
+        });
+        if (DATA != null && DATA.get(EVENTFIRSTQUARTILE) != null) {
+            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get(EVENTFIRSTQUARTILE)), new ApiResponse() {
                 @Override
                 public void onSuccess(String result) {
                     System.out.println("result FirstQuarTile =  " + result.toString());
@@ -352,9 +399,20 @@ public class SoundCastManager {
     }
 
     private void ThirdQuarTileAdvertisement() {
-        if (DATA != null && DATA.get("thirdQuartile") != null) {
-            mediaListener.addThirdQuartile();
-            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get("thirdQuartile")), new ApiResponse() {
+        mediaListener.addThirdQuartile();
+        APIManager.sendGet(TIMEOUT, URLRQUEST + TOKEN + THIRDQUARTILE, new ApiResponse() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("result ThirdQuarTileTOKEN =  " + result.toString());
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("error ThirdQuarTileTOKEN =  " + error.toString());
+            }
+        });
+        if (DATA != null && DATA.get(EVENTTHIRDQUARTILE) != null) {
+            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get(EVENTTHIRDQUARTILE)), new ApiResponse() {
                 @Override
                 public void onSuccess(String result) {
                     System.out.println("result ThirdQuarTile =  " + result.toString());
@@ -363,16 +421,27 @@ public class SoundCastManager {
                 @Override
                 public void onError(String error) {
                     System.out.println("error ThirdQuarTile =  " + error.toString());
-                    ;
                 }
             });
         }
     }
 
     private void CompleteAdvertisement() {
-        if (DATA != null && DATA.get("complete") != null) {
-            mediaListener.addComplete();
-            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get("complete")), new ApiResponse() {
+        mediaListener.addComplete();
+        APIManager.sendGet(TIMEOUT, URLRQUEST + TOKEN + COMPLETE, new ApiResponse() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("result CompleteTOKEN =  " + result.toString());
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("error CompleteTOKEN =  " + error.toString());
+
+            }
+        });
+        if (DATA != null && DATA.get(EVENTCOMPLETE) != null) {
+            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get(EVENTCOMPLETE)), new ApiResponse() {
                 @Override
                 public void onSuccess(String result) {
                     System.out.println("result Complete =  " + result.toString());
@@ -388,8 +457,19 @@ public class SoundCastManager {
     }
 
     private void SkipAdvertisement() {
-        if (DATA != null && DATA.get("skip") != null) {
-            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get("skip")), new ApiResponse() {
+        APIManager.sendGet(TIMEOUT, URLRQUEST + TOKEN + SKIP, new ApiResponse() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("result SkipTOKEN =  " + result.toString());
+            }
+
+            @Override
+            public void onError(String error) {
+                System.out.println("error SkipTOKEN =  " + error.toString());
+            }
+        });
+        if (DATA != null && DATA.get(EVENTSKIP) != null) {
+            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get(EVENTSKIP)), new ApiResponse() {
                 @Override
                 public void onSuccess(String result) {
                     System.out.println("result Skip =  " + result.toString());
@@ -410,8 +490,8 @@ public class SoundCastManager {
             handlerAdvertisement.removeCallbacks(UpdateSongTime);
             handlerAdvertisement = null;
         }
-        if (DATA != null && DATA.get("pause") != null) {
-            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get("pause")), new ApiResponse() {
+        if (DATA != null && DATA.get(EVENTPAUSE) != null) {
+            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get(EVENTPAUSE)), new ApiResponse() {
                 @Override
                 public void onSuccess(String result) {
                     System.out.println("result Pause =  " + result.toString());
@@ -429,8 +509,8 @@ public class SoundCastManager {
         mediaListener.setBackGroundButtonPlay();
         mediaPlayeAdvertisement.start();
         updateStatusAdvertisement();
-        if (DATA != null && DATA.get("resume") != null) {
-            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get("resume")), new ApiResponse() {
+        if (DATA != null && DATA.get(EVENTRESUME) != null) {
+            APIManager.sendGet(TIMEOUT, String.valueOf(DATA.get(EVENTRESUME)), new ApiResponse() {
                 @Override
                 public void onSuccess(String result) {
                     System.out.println("result Resume =  " + result.toString());
